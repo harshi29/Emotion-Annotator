@@ -16,18 +16,13 @@ Created on Sun May 10 13:47:39 2020
 
 import numpy as np
 import json
-from matplotlib import pyplot
 from nltk.corpus import stopwords
 from keras.preprocessing.text import text_to_word_sequence
 from keras.preprocessing.text import Tokenizer 
 from keras.preprocessing.sequence import pad_sequences
 import os
-from keras.layers import Embedding,Flatten,Conv1D,MaxPooling1D
+from keras.layers import Embedding
 from sklearn.preprocessing import MultiLabelBinarizer
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation,Embedding,Flatten
-from keras.layers import LSTM
-from sklearn.model_selection import train_test_split
 from keras.models import load_model
 from sklearn import metrics
 
@@ -106,15 +101,19 @@ acc= np.mean(y_pred==y_test)
 print('Total test accuracy is:', acc)
 
 accuracy = []
+f1_scores = []
 for i in range(len(y_test[0])):
     accuracy.append(metrics.accuracy_score(y_test[:,i],y_pred[:,i]))
+    f1_scores.append(metrics.f1_score(y_test[:,i],y_pred[:,i]))
 #print(accuracy)
+    
+
 
 print("Emotion-wise test accuracy")
 classes= one_hot.classes_
 for label, acc in zip(classes, accuracy):
     print(label, acc)
 
-
-
-
+print('\n')
+for label, f1_score in zip(classes, f1_scores):
+    print(label, f1_score)
